@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -35,12 +35,19 @@ jobs:
           CONTENT_GALLERIES_URL: ${{ secrets['CONTENT_GALLERIES_URL'] }}
         run: npm run sync:content
 
-      - name: Restore dist cache
-        uses: actions/cache@v4
+      - name: Restore previous widgets output
+        uses: actions/checkout@v4
+        continue-on-error: true
         with:
-          path: dist
-          key: dist-${{ github.sha }}
-          restore-keys: dist-
+          ref: widgets-dist
+          path: .widgets-dist
+
+      - name: Merge previous widgets into dist
+        run: |
+          mkdir -p dist
+          if [ -d .widgets-dist ]; then
+            rsync -a --exclude='.git' .widgets-dist/ dist/
+          fi
 
       - name: Build galleries
         run: npm run build:galleries
@@ -50,6 +57,16 @@ jobs:
 
       - name: Disable Jekyll
         run: touch dist/.nojekyll
+
+      - name: Persist merged widgets output
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist
+          publish_branch: widgets-dist
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'chore: sync widgets dist [skip ci]'
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
