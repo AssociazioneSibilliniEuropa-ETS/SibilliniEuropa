@@ -9,10 +9,10 @@
       "alt": "Federica Cupelli"
     },
     {
-      "name": "Valerio GIannini",
+      "name": "Valerio Giannini",
       "role": "Vice Presidente",
       "photo": "generated/staff/profile-pics/ValerioGiannini.jpg",
-      "alt": "Valerio GIannini"
+      "alt": "Valerio Giannini"
     },
     {
       "name": "Daniele Calisti",
@@ -31,6 +31,78 @@
       "role": "Membra del consiglio direttivo",
       "photo": "generated/staff/profile-pics/VirginiaGiannini.jpg",
       "alt": "Virginia Giannini"
+    },
+    {
+      "name": "Antonio Cinti",
+      "role": "Socio",
+      "photo": "generated/staff/profile-pics/AntonioCinti.jpg",
+      "alt": "Antonio Cinti"
+    },
+    {
+      "name": "Elia Mazzoni",
+      "role": "Socio",
+      "photo": "generated/staff/profile-pics/EliaMazzoni.jpg",
+      "alt": "Elia Mazzoni"
+    },
+    {
+      "name": "Enrico Sciamanna",
+      "role": "Socio",
+      "photo": "generated/staff/profile-pics/EnricoSciamanna.jpg",
+      "alt": "Enrico Sciamanna"
+    },
+    {
+      "name": "Giulia Falchi",
+      "role": "Socia",
+      "photo": "generated/staff/profile-pics/GiuliaFalchi.jpg",
+      "alt": "Giulia Falchi"
+    },
+    {
+      "name": "Giulia Lombardi",
+      "role": "Socia",
+      "photo": "generated/staff/profile-pics/GiuliaLombardi.jpg",
+      "alt": "Giulia Lombardi"
+    },
+    {
+      "name": "Giulia Marcie",
+      "role": "Socia",
+      "photo": "generated/staff/profile-pics/GiuliaMarcie.jpg",
+      "alt": "Giulia Marcie"
+    },
+    {
+      "name": "Giulia Porfiri",
+      "role": "Socia",
+      "photo": "generated/staff/profile-pics/GiuliaPorfiri.jpg",
+      "alt": "Giulia Porfiri"
+    },
+    {
+      "name": "Giulio Falsina",
+      "role": "Socio",
+      "photo": "generated/staff/profile-pics/GiulioFalsina.jpg",
+      "alt": "Giulio Falsina"
+    },
+    {
+      "name": "Giulio Teodori",
+      "role": "Socio",
+      "photo": "generated/staff/profile-pics/GiulioTeodori.jpg",
+      "alt": "Giulio Teodori"
+    },
+    {
+      "name": "Lorenzo Perticarà",
+      "role": "Socio",
+      "photo": "generated/staff/profile-pics/LorenzoPerticarà.jpg",
+      "alt": "Lorenzo Perticarà"
+    },
+    {
+      "name": "Maksym Loharzhevskyi",
+      "role": "Socio",
+      "photo": "generated/staff/profile-pics/MaksymLoharzhevskyi.jpg",
+      "alt": "Maksym Loharzhevskyi"
+    },
+    {
+      "name": "Viola Pomili Pomili",
+      "role": "Socia",
+      "photo": "generated/staff/profile-pics/ViolaPomili.jpg",
+      "alt": "Viola Pomili Pomili"
     }
   ]
 }
