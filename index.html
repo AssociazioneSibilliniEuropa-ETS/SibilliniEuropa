@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sibillini Europa Widgets</title>
+    <meta name="description" content="Anteprima pubblicata dei widget standalone per Sibillini Europa.">
+    <link rel="stylesheet" href="./gallery-widget.css">
+    <link rel="stylesheet" href="./partners-widget.css">
+    <link rel="stylesheet" href="./staff-widget.css">
+    <link rel="stylesheet" href="./committee-widget.css">
+    <link rel="stylesheet" href="./schedule-widget.css">
+    <link rel="stylesheet" href="./donation-widget.css">
+    <style>
+
+:root {
+  color-scheme: light;
+  font-family: Georgia, "Times New Roman", serif;
+  background: #f4f0e8;
+  color: #1f2937;
+}
+
+body {
+  margin: 0;
+  min-block-size: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(191, 219, 254, 0.45), transparent 35%),
+    linear-gradient(180deg, #f8f5ef 0%, #f0ece3 100%);
+}
+
+main {
+  max-inline-size: 1100px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+
+h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+}
+
+p {
+  max-inline-size: 66ch;
+  line-height: 1.7;
+}
+
+.demo-columns {
+  display: grid;
+  gap: 2rem;
+}
+
+code {
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.08);
+}
+
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Sibillini Europa Widgets</h1>
+      <p>
+        Questa pagina conferma che il deploy statico e attivo e che i widget possono essere caricati correttamente.
+        Galleria corrente: <code>Sess25</code>. Partner widget: <code>Institutional + All Partners</code>. Staff: <code>Comitato Organizzatore</code>. Comitato Scientifico: <code>scientific-committee</code>. Programma corrente: <code>program</code>.
+      </p>
+      <div class="demo-columns">
+        <div class="gallery-widget" data-gallery="Sess25"></div>
+        <div class="partners-widget" data-partners-set="institutional"></div>
+        <div class="partners-widget" data-partners-set="allPartners"></div>
+        <div class="staff-widget" data-staff-set="committee"></div>
+        <div class="committee-widget" data-committee-set="scientific-committee"></div>
+        <div class="schedule-widget" data-schedule="program"></div>
+        <div class="donation-widget" data-donation-button-id="REPLACE_WITH_HOSTED_BUTTON_ID"></div>
+      </div>
+    </main>
+    <script defer src="./gallery-widget.js"></script>
+    <script defer src="./partners-widget.js"></script>
+    <script defer src="./staff-widget.js"></script>
+    <script defer src="./committee-widget.js"></script>
+    <script defer src="./schedule-widget.js"></script>
+    <script defer src="./donation-widget.js"></script>
+  </body>
+</html>
