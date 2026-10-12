@@ -3,7 +3,7 @@ import { escapeHtml } from "../shared/html.js";
 import { findPendingWidgets, markWidgetInitialized, renderWidgetState } from "../shared/widgets.js";
 
 const DEFAULT_CURRENCY = "EUR";
-const DEFAULT_TITLE = "Sostienici";
+const DEFAULT_LABEL = "Sostieni l'associazione";
 const FREE_AMOUNT_LABEL = "Altro importo";
 
 function parseHttpsUrl(raw) {
@@ -73,33 +73,24 @@ function readConfig(element) {
   return {
     options,
     defaultUrl,
-    title: element.dataset.donationTitle?.trim() || DEFAULT_TITLE,
-    subtitle: element.dataset.donationSubtitle?.trim() || ""
+    label: element.dataset.donationLabel?.trim() || DEFAULT_LABEL
   };
 }
 
 function renderDonation(element, config) {
   element.dataset.state = "ready";
   element.innerHTML = `
-    <section class="dw-shell" aria-label="${escapeHtml(config.title)}">
-      <header class="dw-header">
-        <p class="dw-kicker">Donazione</p>
-        <h4 class="dw-title">${escapeHtml(config.title)}</h4>
-        ${config.subtitle ? `<p class="dw-subtitle">${escapeHtml(config.subtitle)}</p>` : ""}
-      </header>
+    <div class="dw-form">
+      ${config.options.length > 0 ? `
+        <div class="dw-amounts" role="group" aria-label="Importo donazione">
+          ${config.options.map((option, index) => `
+            <button type="button" class="dw-amount-btn" data-url="${escapeHtml(option.url)}" aria-pressed="${index === 0}">${escapeHtml(option.label)}</button>
+          `).join("")}
+        </div>
+      ` : ""}
 
-      <div class="dw-form">
-        ${config.options.length > 0 ? `
-          <div class="dw-amounts" role="group" aria-label="Importo donazione">
-            ${config.options.map((option, index) => `
-              <button type="button" class="dw-amount-btn" data-url="${escapeHtml(option.url)}" aria-pressed="${index === 0}">${escapeHtml(option.label)}</button>
-            `).join("")}
-          </div>
-        ` : ""}
-
-        <a class="dw-submit" href="${escapeHtml(config.defaultUrl)}" target="_blank" rel="noopener">Dona con SumUp</a>
-      </div>
-    </section>
+      <a class="dw-submit" href="${escapeHtml(config.defaultUrl)}" target="_blank" rel="noopener">${escapeHtml(config.label)}</a>
+    </div>
   `;
 
   const submitLink = element.querySelector(".dw-submit");

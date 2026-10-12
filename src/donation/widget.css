@@ -4,7 +4,6 @@
   --dw-shell-border: rgba(31, 41, 55, 0.12);
   --dw-shell-shadow: 0 24px 60px rgba(16, 24, 40, 0.12);
   --dw-ink: #18212b;
-  --dw-muted: #5c6773;
   --dw-accent: #3f7b4f;
   --dw-accent-strong: #2f5f3b;
   --dw-field-bg: #ffffff;
@@ -21,59 +20,21 @@
   box-shadow: var(--dw-shell-shadow);
 }
 
-.dw-shell {
-  display: grid;
-  gap: 1.25rem;
-  max-inline-size: 26rem;
-  padding: clamp(1rem, 2vw, 1.5rem);
-  border-radius: calc(var(--dw-radius) + 0.3rem);
-  border: 1px solid var(--dw-shell-border);
-  background:
-    radial-gradient(circle at top left, rgba(63, 123, 79, 0.08), transparent 34%),
-    radial-gradient(circle at top right, rgba(245, 158, 11, 0.07), transparent 24%),
-    var(--dw-shell-bg);
-  box-shadow: var(--dw-shell-shadow);
-}
-
-.dw-header {
-  display: grid;
-  gap: 0.35rem;
-}
-
-.dw-kicker {
-  margin: 0;
-  color: var(--dw-accent);
-  font: 700 0.72rem/1.2 Arial, sans-serif;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.dw-title {
-  margin: 0;
-  color: var(--dw-ink);
-  font: 700 clamp(1.4rem, 2.2vw, 2rem)/1.1 Georgia, "Times New Roman", serif;
-}
-
-.dw-subtitle {
-  margin: 0;
-  max-inline-size: 60ch;
-  color: var(--dw-muted);
-  font: 400 0.98rem/1.65 Georgia, "Times New Roman", serif;
-}
-
 .dw-form {
   display: grid;
   gap: 0.75rem;
+  justify-items: center;
 }
 
 .dw-amounts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.6rem;
 }
 
 .dw-amount-btn {
-  padding: 0.65rem 0.5rem;
+  padding: 0.65rem 0.9rem;
   border-radius: 0.8rem;
   border: 1px solid var(--dw-field-border);
   background: var(--dw-field-bg);
@@ -94,8 +55,8 @@
 }
 
 .dw-submit {
-  display: block;
-  padding: 0.85rem 1rem;
+  display: inline-block;
+  padding: 0.85rem 1.5rem;
   border-radius: 0.8rem;
   border: none;
   background: var(--dw-accent-strong);
@@ -110,10 +71,4 @@
 .dw-submit:hover {
   background: var(--dw-accent);
   transform: translateY(-1px);
-}
-
-@media (max-width: 480px) {
-  .dw-shell {
-    padding: 0.9rem;
-  }
 }

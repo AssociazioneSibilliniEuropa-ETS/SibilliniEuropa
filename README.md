@@ -140,10 +140,9 @@ Attributi disponibili (serve almeno uno tra `data-donation-url` e `data-donation
 - `data-donation-url`: link di pagamento SumUp a importo libero.
 - `data-donation-links`: link SumUp a importo fisso, nel formato `importo:url` separati da virgola. Ogni voce diventa un bottone preset.
 - `data-donation-currency` (opzionale, default `EUR`): codice valuta ISO usato per le etichette dei preset.
-- `data-donation-title` (opzionale, default `Sostienici`): titolo widget.
-- `data-donation-subtitle` (opzionale): sottotitolo/descrizione.
+- `data-donation-label` (opzionale, default `Sostieni l'associazione`): testo del bottone.
 
-Sono accettati solo link `https`. Il bottone "Dona con SumUp" apre in una nuova scheda il link del preset selezionato (il primo di default); con entrambi gli attributi compare anche il bottone "Altro importo" che punta a `data-donation-url`. Con il solo `data-donation-url` il widget mostra soltanto il bottone di donazione e l'importo viene inserito sulla pagina SumUp.
+Sono accettati solo link `https`. Il widget mostra solo il bottone, senza card ne titolo. Il bottone apre in una nuova scheda il link del preset selezionato (il primo di default); con entrambi gli attributi compare anche il bottone "Altro importo" che punta a `data-donation-url`. Con il solo `data-donation-url` il widget mostra soltanto il bottone di donazione e l'importo viene inserito sulla pagina SumUp.
 
 ```html
 <link rel="stylesheet" href="https://your-static-host.example/donation-widget.css">
@@ -152,8 +151,7 @@ Sono accettati solo link `https`. Il bottone "Dona con SumUp" apre in una nuova 
 <div class="donation-widget"
      data-donation-url="https://pay.sumup.com/b2c/XXXXXXXX"
      data-donation-links="10:https://pay.sumup.com/b2c/AAAAAAAA,25:https://pay.sumup.com/b2c/BBBBBBBB"
-     data-donation-title="Sostieni Sibillini Europa"
-     data-donation-subtitle="Ogni contributo aiuta a organizzare l'evento."></div>
+     data-donation-label="Sostieni l'associazione"></div>
 ```
 
 Dopo il deploy, la root del sito pubblicato mostra una pagina di anteprima del widget. Se vuoi verificare direttamente gli asset, prova anche `/gallery-widget.js`, `/gallery-widget.css` e `/generated/galleries.json`.
