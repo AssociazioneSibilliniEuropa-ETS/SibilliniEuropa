@@ -87,7 +87,7 @@ export const showcaseWidgets = [
   {
     className: "donation-widget",
     attrs: {
-      "data-donation-button-id": "REPLACE_WITH_HOSTED_BUTTON_ID"
+      "data-donation-url": "https://pay.sumup.com/b2c/Q1K9NEZ2"
     }
   }
 ];

@@ -129,29 +129,29 @@ Per il calendario settimanale:
 
 Slug attuale pubblicato nel repository: `Sess25`.
 
-Per la donazione tramite PayPal:
+Per la donazione tramite SumUp:
 
-1. Su PayPal (account Business) crea un bottone Donate (PayPal.Me/Donate Button) e recupera l'`hosted_button_id`.
+1. Dalla dashboard o dall'app SumUp crea un link di pagamento: uno a importo libero e, se vuoi i preset, uno per ogni importo fisso.
 2. Nessun build dati richiesto: il widget usa solo attributi `data-*` sull'elemento contenitore, niente file in `content/`.
-3. In WordPress importa `donation-widget.css`, `donation-widget.js` e aggiungi un contenitore `.donation-widget` con `data-donation-button-id`.
+3. In WordPress importa `donation-widget.css`, `donation-widget.js` e aggiungi un contenitore `.donation-widget` con `data-donation-url` e/o `data-donation-links`.
 
-Attributi disponibili:
+Attributi disponibili (serve almeno uno tra `data-donation-url` e `data-donation-links`):
 
-- `data-donation-button-id` (obbligatorio): hosted button ID PayPal.
-- `data-donation-amounts` (opzionale, default `10,25,50,100`): importi preset separati da virgola.
-- `data-donation-currency` (opzionale, default `EUR`): codice valuta ISO.
+- `data-donation-url`: link di pagamento SumUp a importo libero.
+- `data-donation-links`: link SumUp a importo fisso, nel formato `importo:url` separati da virgola. Ogni voce diventa un bottone preset.
+- `data-donation-currency` (opzionale, default `EUR`): codice valuta ISO usato per le etichette dei preset.
 - `data-donation-title` (opzionale, default `Sostienici`): titolo widget.
 - `data-donation-subtitle` (opzionale): sottotitolo/descrizione.
 
-Al submit il form posta a `https://www.paypal.com/donate` con `hosted_button_id`, `currency_code` e `amount` (preso dal preset cliccato o dal campo importo libero); si apre in una nuova scheda cosi il visitatore non perde il sito.
+Sono accettati solo link `https`. Il bottone "Dona con SumUp" apre in una nuova scheda il link del preset selezionato (il primo di default); con entrambi gli attributi compare anche il bottone "Altro importo" che punta a `data-donation-url`. Con il solo `data-donation-url` il widget mostra soltanto il bottone di donazione e l'importo viene inserito sulla pagina SumUp.
 
 ```html
 <link rel="stylesheet" href="https://your-static-host.example/donation-widget.css">
 <script defer src="https://your-static-host.example/donation-widget.js"></script>
 
 <div class="donation-widget"
-     data-donation-button-id="XXXXXXXXXXXXX"
-     data-donation-amounts="10,25,50,100"
+     data-donation-url="https://pay.sumup.com/b2c/XXXXXXXX"
+     data-donation-links="10:https://pay.sumup.com/b2c/AAAAAAAA,25:https://pay.sumup.com/b2c/BBBBBBBB"
      data-donation-title="Sostieni Sibillini Europa"
      data-donation-subtitle="Ogni contributo aiuta a organizzare l'evento."></div>
 ```
@@ -257,7 +257,7 @@ Per WordPress, se usi GitHub Pages senza dominio custom, aggiorna gli embed con 
 <link rel="stylesheet" href="https://<user>.github.io/<repo>/donation-widget.css">
 <script defer src="https://<user>.github.io/<repo>/donation-widget.js"></script>
 
-<div class="donation-widget" data-donation-button-id="XXXXXXXXXXXXX"></div>
+<div class="donation-widget" data-donation-url="https://pay.sumup.com/b2c/XXXXXXXX"></div>
 ```
 
 ## Contenuti fuori repository (Google Drive)

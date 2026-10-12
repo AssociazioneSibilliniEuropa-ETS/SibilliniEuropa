@@ -1,39 +1,47 @@
 import "./widget.css";
 import { escapeHtml } from "../shared/html.js";
-import { createInstanceId, findPendingWidgets, markWidgetInitialized, renderWidgetState } from "../shared/widgets.js";
+import { findPendingWidgets, markWidgetInitialized, renderWidgetState } from "../shared/widgets.js";
 
-const DEFAULT_AMOUNTS = [10, 25, 50, 100];
 const DEFAULT_CURRENCY = "EUR";
 const DEFAULT_TITLE = "Sostienici";
-const PAYPAL_DONATE_URL = "https://www.paypal.com/donate";
+const FREE_AMOUNT_LABEL = "Altro importo";
 
-function parseAmounts(raw) {
-  if (!raw) {
-    return DEFAULT_AMOUNTS;
-  }
+function parseHttpsUrl(raw) {
+  const value = raw?.trim();
 
-  const amounts = raw
-    .split(",")
-    .map((value) => Number.parseFloat(value.trim()))
-    .filter((value) => Number.isFinite(value) && value > 0);
-
-  return amounts.length > 0 ? amounts : DEFAULT_AMOUNTS;
-}
-
-function readConfig(element) {
-  const buttonId = element.dataset.donationButtonId?.trim();
-
-  if (!buttonId) {
+  if (!value) {
     return null;
   }
 
-  return {
-    buttonId,
-    amounts: parseAmounts(element.dataset.donationAmounts),
-    currency: element.dataset.donationCurrency?.trim() || DEFAULT_CURRENCY,
-    title: element.dataset.donationTitle?.trim() || DEFAULT_TITLE,
-    subtitle: element.dataset.donationSubtitle?.trim() || ""
-  };
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
+// Formato: "10:https://pay.sumup.com/...,25:https://pay.sumup.com/..."
+function parseLinks(raw) {
+  if (!raw) {
+    return [];
+  }
+
+  return raw
+    .split(",")
+    .map((entry) => {
+      const separatorIndex = entry.indexOf(":");
+
+      if (separatorIndex === -1) {
+        return null;
+      }
+
+      const amount = Number.parseFloat(entry.slice(0, separatorIndex).trim());
+      const url = parseHttpsUrl(entry.slice(separatorIndex + 1));
+
+      return Number.isFinite(amount) && amount > 0 && url ? { amount, url } : null;
+    })
+    .filter(Boolean);
 }
 
 function formatAmountLabel(amount, currency) {
@@ -44,9 +52,33 @@ function formatAmountLabel(amount, currency) {
   }
 }
 
-function renderDonation(element, config) {
-  const widgetId = createInstanceId("dw");
+function readConfig(element) {
+  const currency = element.dataset.donationCurrency?.trim() || DEFAULT_CURRENCY;
+  const freeAmountUrl = parseHttpsUrl(element.dataset.donationUrl);
+  const options = parseLinks(element.dataset.donationLinks).map(({ amount, url }) => ({
+    label: formatAmountLabel(amount, currency),
+    url
+  }));
 
+  if (freeAmountUrl && options.length > 0) {
+    options.push({ label: FREE_AMOUNT_LABEL, url: freeAmountUrl });
+  }
+
+  const defaultUrl = options[0]?.url ?? freeAmountUrl;
+
+  if (!defaultUrl) {
+    return null;
+  }
+
+  return {
+    options,
+    defaultUrl,
+    title: element.dataset.donationTitle?.trim() || DEFAULT_TITLE,
+    subtitle: element.dataset.donationSubtitle?.trim() || ""
+  };
+}
+
+function renderDonation(element, config) {
   element.dataset.state = "ready";
   element.innerHTML = `
     <section class="dw-shell" aria-label="${escapeHtml(config.title)}">
@@ -56,51 +88,28 @@ function renderDonation(element, config) {
         ${config.subtitle ? `<p class="dw-subtitle">${escapeHtml(config.subtitle)}</p>` : ""}
       </header>
 
-      <form class="dw-form" action="${PAYPAL_DONATE_URL}" method="post" target="_blank" rel="noopener" data-widget-id="${widgetId}">
-        <input type="hidden" name="hosted_button_id" value="${escapeHtml(config.buttonId)}">
-        <input type="hidden" name="currency_code" value="${escapeHtml(config.currency)}">
+      <div class="dw-form">
+        ${config.options.length > 0 ? `
+          <div class="dw-amounts" role="group" aria-label="Importo donazione">
+            ${config.options.map((option, index) => `
+              <button type="button" class="dw-amount-btn" data-url="${escapeHtml(option.url)}" aria-pressed="${index === 0}">${escapeHtml(option.label)}</button>
+            `).join("")}
+          </div>
+        ` : ""}
 
-        <div class="dw-amounts" role="group" aria-label="Importo donazione">
-          ${config.amounts.map((amount) => `
-            <button type="button" class="dw-amount-btn" data-amount="${amount}" aria-pressed="false">${escapeHtml(formatAmountLabel(amount, config.currency))}</button>
-          `).join("")}
-        </div>
-
-        <label class="dw-custom-label" for="${widgetId}-amount">Altro importo</label>
-        <input class="dw-custom-input" id="${widgetId}-amount" type="number" name="amount" min="1" step="0.01" inputmode="decimal" placeholder="Importo libero" autocomplete="off">
-
-        <p class="dw-error" hidden>Inserisci un importo valido.</p>
-
-        <button type="submit" class="dw-submit">Dona con PayPal</button>
-      </form>
+        <a class="dw-submit" href="${escapeHtml(config.defaultUrl)}" target="_blank" rel="noopener">Dona con SumUp</a>
+      </div>
     </section>
   `;
 
-  const form = element.querySelector(".dw-form");
-  const amountInput = element.querySelector(".dw-custom-input");
-  const errorMessage = element.querySelector(".dw-error");
+  const submitLink = element.querySelector(".dw-submit");
   const amountButtons = [...element.querySelectorAll(".dw-amount-btn")];
 
   amountButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      amountInput.value = button.dataset.amount;
-      errorMessage.hidden = true;
+      submitLink.href = button.dataset.url;
       amountButtons.forEach((other) => other.setAttribute("aria-pressed", String(other === button)));
     });
-  });
-
-  amountInput.addEventListener("input", () => {
-    amountButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.amount === amountInput.value)));
-  });
-
-  form.addEventListener("submit", (event) => {
-    const value = Number.parseFloat(amountInput.value);
-
-    if (!Number.isFinite(value) || value <= 0) {
-      event.preventDefault();
-      errorMessage.hidden = false;
-      amountInput.focus();
-    }
   });
 }
 
@@ -117,7 +126,7 @@ export function initDonationWidgets(root = document) {
     const config = readConfig(element);
 
     if (!config) {
-      renderWidgetState(element, "Donation widget: manca hosted_button_id (data-donation-button-id).", "error");
+      renderWidgetState(element, "Donation widget: manca un link di pagamento SumUp valido (data-donation-url o data-donation-links).", "error");
       continue;
     }
 
